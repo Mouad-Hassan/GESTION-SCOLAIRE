@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/../config/database.php';
 
 $pageTitle = 'Tableau de bord';
 
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/navbar.php';
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/navbar.php';
 
 $pdo = getDBConnection();
 $stats = [
-    'eleves'      => $pdo->query("SELECT COUNT(*) FROM eleves")->fetchColumn(),
-    'enseignants' => $pdo->query("SELECT COUNT(*) FROM enseignants")->fetchColumn(),
-    'classes'     => $pdo->query("SELECT COUNT(*) FROM classes")->fetchColumn(),
-    'matieres'    => $pdo->query("SELECT COUNT(*) FROM matieres")->fetchColumn(),
-    'inscriptions'=> $pdo->query("SELECT COUNT(*) FROM inscriptions")->fetchColumn(),
-    'affectations'=> $pdo->query("SELECT COUNT(*) FROM affectations")->fetchColumn(),
+    'eleve'      => $pdo->query("SELECT COUNT(*) FROM eleve")->fetchColumn(),
+    'enseignant' => $pdo->query("SELECT COUNT(*) FROM enseignant")->fetchColumn(),
+    'classe'     => $pdo->query("SELECT COUNT(*) FROM classe")->fetchColumn(),
+    'matiere'    => $pdo->query("SELECT COUNT(*) FROM matiere")->fetchColumn(),
+    'inscription'=> $pdo->query("SELECT COUNT(*) FROM inscription")->fetchColumn(),
+    'affectation'=> $pdo->query("SELECT COUNT(*) FROM affectation")->fetchColumn(),
 ];
 ?>
 
@@ -25,33 +25,33 @@ $stats = [
     
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-number"><?= htmlspecialchars((string)$stats['eleves']) ?></div>
-            <div class="stat-label">👨‍🎓 Élèves</div>
-            <a href="/pages/eleves/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
+            <div class="stat-number"><?= htmlspecialchars((string)$stats['eleve']) ?></div>
+            <div class="stat-label">👨‍🎓 Élève</div>
+            <a href="/pages/eleve/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
         </div>
         <div class="stat-card">
-            <div class="stat-number"><?= htmlspecialchars((string)$stats['enseignants']) ?></div>
-            <div class="stat-label">👨‍🏫 Enseignants</div>
-            <a href="/pages/enseignants/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
+            <div class="stat-number"><?= htmlspecialchars((string)$stats['enseignant']) ?></div>
+            <div class="stat-label">👨‍🏫 Enseignant</div>
+            <a href="/pages/enseignant/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
         </div>
         <div class="stat-card">
-            <div class="stat-number"><?= htmlspecialchars((string)$stats['classes']) ?></div>
-            <div class="stat-label">🏫 Classes</div>
-            <a href="/pages/classes/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
+            <div class="stat-number"><?= htmlspecialchars((string)$stats['classe']) ?></div>
+            <div class="stat-label">🏫 Classe</div>
+            <a href="/pages/classe/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
         </div>
         <div class="stat-card">
-            <div class="stat-number"><?= htmlspecialchars((string)$stats['matieres']) ?></div>
-            <div class="stat-label">📖 Matières</div>
-            <a href="/pages/matieres/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
+            <div class="stat-number"><?= htmlspecialchars((string)$stats['matiere']) ?></div>
+            <div class="stat-label">📖 Matière</div>
+            <a href="/pages/matiere/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
         </div>
         <div class="stat-card">
-            <div class="stat-number"><?= htmlspecialchars((string)$stats['inscriptions']) ?></div>
-            <div class="stat-label">📝 Inscriptions</div>
-            <a href="/pages/inscriptions/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
+            <div class="stat-number"><?= htmlspecialchars((string)$stats['inscription']) ?></div>
+            <div class="stat-label">📝 Inscription</div>
+            <a href="/pages/inscription/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
         </div>
         <div class="stat-card">
-            <div class="stat-number"><?= htmlspecialchars((string)$stats['affectations']) ?></div>
-            <div class="stat-label">🔗 Affectations</div>
+            <div class="stat-number"><?= htmlspecialchars((string)$stats['affectation']) ?></div>
+            <div class="stat-label">🔗 Affectation</div>
             <a href="/pages/affectation/index.php" class="btn btn-primary btn-sm" style="margin-top: 10px;">Gérer</a>
         </div>
     </div>
@@ -72,15 +72,15 @@ $stats = [
                     <?php
                     $stmt = $pdo->query("
                         SELECT e.nom, e.prenom, c.nom_classe, i.annee_scolaire, i.date_inscription
-                        FROM inscriptions i
-                        JOIN eleves e ON i.id_eleve = e.id_eleve
-                        JOIN classes c ON i.id_classe = c.id_classe
+                        FROM inscription i
+                        JOIN eleve e ON i.id_eleve = e.id_eleve
+                        JOIN classe c ON i.id_classe = c.id_classe
                         ORDER BY i.date_inscription DESC
                         LIMIT 5
                     ");
-                    $inscriptions = $stmt->fetchAll();
+                    $inscription = $stmt->fetchAll();
                     
-                    if (empty($inscriptions)): ?>
+                    if (empty($inscription)): ?>
                         <tr><td colspan="4" style="text-align:center;">Aucune inscription enregistrée</td></tr>
                     <?php else:
                         foreach ($inscriptions as $insc): ?>
@@ -97,4 +97,4 @@ $stats = [
     </div>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php';; ?>

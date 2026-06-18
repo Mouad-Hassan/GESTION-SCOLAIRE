@@ -5,7 +5,7 @@ $nom_base = "gestion_scolaire";
 $utilisateur = "root";
 $mot_de_passe = "";
 
-function connexionBD() {
+function getDBConnection() {
 
     global $serveur, $nom_base, $utilisateur, $mot_de_passe;
 
