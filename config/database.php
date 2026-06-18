@@ -1,34 +1,27 @@
 <?php
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'gestion_scolaire');
-define('DB_USER', 'root');
-define('DB_PASS', '');         
-define('DB_CHARSET', 'utf8mb4');
+$serveur = "localhost";
+$nom_base = "gestion_scolaire";
+$utilisateur = "root";
+$mot_de_passe = "";
 
-/**
- * Établit une connexion PDO sécurisée à la base de données
- * @return PDO
- * @throws PDOException
- */
-function getDBConnection(): PDO {
-    static $pdo = null;
-    
-    if ($pdo === null) {
-        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
-        
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
-        
-        try {
-            $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
-        } catch (PDOException $e) {
-            die("Erreur de connexion à la base de données : " . htmlspecialchars($e->getMessage()));
-        }
+function connexionBD() {
+
+    global $serveur, $nom_base, $utilisateur, $mot_de_passe;
+
+    try {
+        $connexion = new PDO(
+            "mysql:host=$serveur;dbname=$nom_base;charset=utf8",
+            $utilisateur,
+            $mot_de_passe
+        );
+
+        $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        return $connexion;
+
+    } catch(PDOException $erreur) {
+        die("Erreur de connexion : " . $erreur->getMessage());
     }
-    
-    return $pdo;
 }
+?>
