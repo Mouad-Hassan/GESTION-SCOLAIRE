@@ -23,7 +23,7 @@ $path = str_repeat("../", substr_count($_SERVER['PHP_SELF'],'/')-2);
 ?>
 
 <link rel="stylesheet" href="<?= $path ?>assets/css/style.css">
-
+r
 
 </head>
 
