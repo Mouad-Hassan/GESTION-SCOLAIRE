@@ -1,31 +1,43 @@
-<?php
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
-?>
-<nav class="navbar">
-    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-        <a href="/index.php" class="navbar-brand">📚 Gestion Scolaire</a>
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a href="/index.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'index.php' && dirname($_SERVER['PHP_SELF']) === '/' ? 'active' : '' ?>">Accueil</a>
-            </li>
-            <li class="nav-item">
-                <a href="/pages/eleves/index.php" class="nav-link <?= strpos($_SERVER['PHP_SELF'], '/eleves/') !== false ? 'active' : '' ?>">Élèves</a>
-            </li>
-            <li class="nav-item">
-                <a href="/pages/enseignants/index.php" class="nav-link <?= strpos($_SERVER['PHP_SELF'], '/enseignants/') !== false ? 'active' : '' ?>">Enseignants</a>
-            </li>
-            <li class="nav-item">
-                <a href="/pages/classes/index.php" class="nav-link <?= strpos($_SERVER['PHP_SELF'], '/classes/') !== false ? 'active' : '' ?>">Classes</a>
-            </li>
-            <li class="nav-item">
-                <a href="/pages/matieres/index.php" class="nav-link <?= strpos($_SERVER['PHP_SELF'], '/matieres/') !== false ? 'active' : '' ?>">Matières</a>
-            </li>
-            <li class="nav-item">
-                <a href="/pages/inscriptions/index.php" class="nav-link <?= strpos($_SERVER['PHP_SELF'], '/inscriptions/') !== false ? 'active' : '' ?>">Inscriptions</a>
-            </li>
-            <li class="nav-item">
-                <a href="/pages/affectation/index.php" class="nav-link <?= strpos($_SERVER['PHP_SELF'], '/affectation/') !== false ? 'active' : '' ?>">Affectations</a>
-            </li>
-        </ul>
-    </div>
-</nav>                                                                      \a
+<div class="container-fluid">
+<a class="navbar-brand" href="../index.php">🎓 Gestion Scolaire</a>
+
+<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+
+<span class="navbar-toggler-icon"></span></button>
+
+<div class="collapse navbar-collapse" id="menu">
+    
+<ul class="navbar-nav me-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../index.php">Accueil</a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="../eleves/index.php">Élèves</a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="../enseignants/index.php"> Enseignants </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="../classes/index.php"> Classes </a>
+</li>
+
+<li class="nav-item"> 
+    <a class="nav-link" href="../matieres/index.php"> Matières </a>
+</li>
+
+<li class="nav-item"> 
+    <a class="nav-link" href="../inscriptions/index.php"> Inscriptions </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="../affectation/index.php"> Affectations </a> 
+</li>
+</ul>
+</div>
+</div>
+</nav>
