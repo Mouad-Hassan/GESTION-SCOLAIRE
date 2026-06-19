@@ -7,7 +7,6 @@ require_once dirname(__DIR__, 2) . '/bootstrap.php';
 $pageTitle = 'Nouvelle inscription';
 $erreurs   = [];
 $pdo       = getDBConnection();
-\
 $eleves  = $pdo->query("SELECT id_eleve, nom, prenom FROM eleve ORDER BY nom")->fetchAll(PDO::FETCH_ASSOC);
 $classes = $pdo->query("SELECT id_classe, nom_classe, niveau FROM classe ORDER BY nom_classe")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -36,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require_once ROOT_PATH . '/includes/header.php';
-require_once ROOT_PATH . '/includes/navbar.php';
+require_once dirname(__DIR__, 2) . '/includes/header.php';
+require_once dirname(__DIR__, 2) . '/includes/navbar.php';
 ?>
 
 <div class="container mt-4" style="max-width: 500px;">
@@ -99,4 +98,4 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </div>
 </div>
 
-<?php require_once ROOT_PATH . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__, 2) . '/includes/footer.php'; ?>
