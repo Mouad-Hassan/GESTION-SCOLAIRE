@@ -1,34 +1,29 @@
 <?php
+declare(strict_types=1);
 
-require_once "../../config/database.php";
+require_once __DIR__ . '/../../config/database.php';
 
-$pdo=getDBConnection();
+$pdo = getDBConnection();
 
-$id=filter_input(
-INPUT_POST,
-'id',
-FILTER_VALIDATE_INT
-);
+$id = (int)($_GET['id'] ?? 0);
 
-if($id){
+if ($id === 0) {
+    header('Location: index.php');
+    exit;
+}
+$stmt = $pdo->prepare("SELECT id_eleve FROM eleve WHERE id_eleve = :id");
+$stmt->execute([':id' => $id]);
 
-try{
-
-$stmt=$pdo->prepare("
-
-DELETE FROM eleve
-
-WHERE id_eleve=?
-
-");
-
-$stmt->execute([$id]);
-
-}catch(PDOException $e){
+if (!$stmt->fetch()) {
+    header('Location: index.php');
+    exit;
 }
 
-}
+$stmt = $pdo->prepare("DELETE FROM inscription WHERE id_eleve = :id");
+$stmt->execute([':id' => $id]);
 
-header("Location:index.php");
+$stmt = $pdo->prepare("DELETE FROM eleve WHERE id_eleve = :id");
+$stmt->execute([':id' => $id]);
+
+header('Location: index.php?succes=supprime');
 exit;
-?>
