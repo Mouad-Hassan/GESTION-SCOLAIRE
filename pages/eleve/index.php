@@ -1,77 +1,76 @@
 <?php
+
 declare(strict_types=1);
+
 require_once __DIR__ . '/../../config/database.php';
 
-$pageTitle = 'Liste des élèves';
+$pageTitle = 'Liste des Élèves';
+
 require_once __DIR__ . '/../../includes/header.php';
+
 require_once __DIR__ . '/../../includes/navbar.php';
 
 $pdo = getDBConnection();
 
-$message = $_SESSION['message'] ?? null;
-$messageType = $_SESSION['message_type'] ?? 'success';
-unset($_SESSION['message'], $_SESSION['message_type']);
+$stmt = $pdo->query("SELECT * FROM eleve ORDER BY nom ASC");
 
-$stmt = $pdo->query("
-    SELECT e.*, c.nom_classe, i.annee_scolaire
-    FROM eleve e
-    LEFT JOIN inscription i ON e.id_eleve = i.id_eleve 
-        AND i.annee_scolaire = (
-            SELECT MAX(annee_scolaire) FROM inscription WHERE id_eleve = e.id_eleve
-        )
-    LEFT JOIN classe c ON i.id_classe = c.id_classe
-    ORDER BY e.nom, e.prenom
-");
-$eleves = $stmt->fetchAll();
+$eleves = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div class="container">
-    <div class="card">
-        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <span>👨‍🎓 Liste des élèves</span>
-            <a href="create.php" class="btn btn-success">+ Ajouter un élève</a>
-        </div>
-        <div class="card-body">
-            <?php if ($message): ?>
-                <div class="alert alert-<?= htmlspecialchars($messageType) ?>"><?= htmlspecialchars($message) ?></div>
-            <?php endif; ?>
+<div class="container mt-4">
 
-            <table class="table">
-                <thead>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3">👨‍🎓 Liste des Élèves</h1>
+        <a href="create.php" class="btn btn-success">+ Ajouter un élève</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-primary">
                     <tr>
-                        <th>Matricule</th>
+                        <th>#</th>
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Date de naissance</th>
-                        <th>Classe actuelle</th>
-                        <th>Année</th>
-                        <th>Actions</th>
+                        <th>Email</th>
+                        <th>Adresse</th>
+                        <th>Téléphone</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($eleve)): ?>
-                        <tr><td colspan="7" style="text-align:center;">Aucun élève enregistré</td></tr>
-                    <?php else: 
-                        foreach ($eleve as $eleve): ?>
+                    <?php if (empty($eleves)): ?>
                         <tr>
-                            <td><?= htmlspecialchars($eleve['matricule']) ?></td>
-                            <td><?= htmlspecialchars($eleve['nom']) ?></td>
-                            <td><?= htmlspecialchars($eleve['prenom']) ?></td>
-                            <td><?= htmlspecialchars($eleve['date_naissance'] ?? '-') ?></td>
-                            <td><?= htmlspecialchars($eleve['nom_classe'] ?? 'Non inscrit') ?></td>
-                            <td><?= htmlspecialchars($eleve['annee_scolaire'] ?? '-') ?></td>
-                            <td>
-                                <a href="edit.php?id=<?= (int)$eleve['id_eleve'] ?>" class="btn btn-warning btn-sm">✏️ Modifier</a>
-                                <a href="delete.php?id=<?= (int)$eleve['id_eleve'] ?>" 
-                                   class="btn btn-danger btn-sm"
-                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')">🗑️ Supprimer</a>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                Aucun élève enregistré.
                             </td>
                         </tr>
-                    <?php endforeach; endif; ?>
+                    <?php else: ?>
+                        <?php foreach ($eleves as $eleve): ?>
+                            <tr>
+                                <td><?= htmlspecialchars((string)$eleve['id_eleve']) ?></td>
+                                <td><?= htmlspecialchars($eleve['nom']) ?></td>
+                                <td><?= htmlspecialchars($eleve['prenom']) ?></td>
+                                <td><?= htmlspecialchars($eleve['date_naissance']) ?></td>
+                                <td><?= htmlspecialchars($eleve['email']) ?></td>
+                                <td><?= htmlspecialchars($eleve['adresse']) ?></td>
+                                <td><?= htmlspecialchars($eleve['telephone']) ?></td>
+                                <td class="text-center">
+                                    <a href="edit.php?id=<?= $eleve['id_eleve'] ?>"
+                                       class="btn btn-warning btn-sm">✏️ Modifier</a>
+                                    <a href="delete.php?id=<?= $eleve['id_eleve'] ?>"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Supprimer cet élève ?')">🗑️ Supprimer</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
