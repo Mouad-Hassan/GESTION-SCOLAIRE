@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once DIR . '/../../config/database.php';
+require_once __DIR__ . '/../../config/database.php';
 
 $pdo = getDBConnection();
 $id  = (int)($_GET['id'] ?? 0);
