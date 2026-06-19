@@ -1,119 +1,70 @@
 <?php
+declare(strict_types=1);
 
-$pageTitle="Enseignant";
+require_once __DIR__ . '/../../config/database.php';
 
-require_once "../../config/database.php";
-require_once "../../includes/header.php";
-require_once "../../includes/navbar.php";
+$pageTitle = 'Liste des Enseignants';
+
+require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../../includes/navbar.php';
 
 $pdo = getDBConnection();
-
-$enseignants = $pdo->query("
-    SELECT *
-    FROM enseignant
-    ORDER BY id_enseignant DESC
-")->fetchAll();
+$stmt    = $pdo->query("SELECT * FROM enseignant ORDER BY nom ASC");
+$enseignants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div class="container">
+<div class="container mt-4">
 
-    <div class="card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3">👨‍🏫 Liste des Enseignants</h1>
+        <a href="create.php" class="btn btn-success">+ Ajouter un enseignant</a>
+    </div>
 
-        <div class="card-header d-flex justify-content-between">
-            <span>Liste enseignants</span>
-
-            <a href="create.php" class="btn btn-success">
-                Ajouter
-            </a>
-        </div>
-
-
-        <div class="card-body">
-
-            <table class="table table-bordered">
-
-                <tr>
-                    <th>Matricule</th>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Spécialité</th>
-                    <th>Email</th>
-                    <th>Téléphone</th>
-                    <th>Actions</th>
-                </tr>
-
-
-                <?php foreach($enseignants as $e): ?>
-
-                <tr>
-
-                    <td>
-                        <?= htmlspecialchars($e['matricule']) ?>
-                    </td>
-
-                    <td>
-                        <?= htmlspecialchars($e['nom']) ?>
-                    </td>
-
-                    <td>
-                        <?= htmlspecialchars($e['prenom']) ?>
-                    </td>
-
-                    <td>
-                        <?= htmlspecialchars($e['specialite']) ?>
-                    </td>
-
-                    <td>
-                        <?= htmlspecialchars($e['email']) ?>
-                    </td>
-
-                    <td>
-                        <?= htmlspecialchars($e['telephone']) ?>
-                    </td>
-
-
-                    <td>
-
-                        <a href="edit.php?id=<?= $e['id_enseignant'] ?>"
-                           class="btn btn-warning btn-sm">
-                            Modifier
-                        </a>
-
-
-                        <form method="POST"
-                              action="delete.php"
-                              style="display:inline">
-
-                            <input type="hidden"
-                                   name="id"
-                                   value="<?= $e['id_enseignant'] ?>">
-
-
-                            <button class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Voulez-vous supprimer cet enseignant ?')">
-
-                                Supprimer
-
-                            </button>
-
-                        </form>
-
-
-                    </td>
-
-                </tr>
-
-
-                <?php endforeach; ?>
-
-
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-primary">
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Spécialité</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($enseignants)): ?>
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                Aucun enseignant enregistré.
+                            </td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($enseignants as $ens): ?>
+                            <tr>
+                                <td><?= htmlspecialchars((string)$ens['id_enseignant']) ?></td>
+                                <td><?= htmlspecialchars($ens['nom']) ?></td>
+                                <td><?= htmlspecialchars($ens['prenom']) ?></td>
+                                <td><?= htmlspecialchars($ens['specialite']) ?></td>
+                                <td><?= htmlspecialchars($ens['email']) ?></td>
+                                <td><?= htmlspecialchars($ens['telephone']) ?></td>
+                                <td class="text-center">
+                                    <a href="edit.php?id=<?= $ens['id_enseignant'] ?>"
+                                       class="btn btn-warning btn-sm">✏️ Modifier</a>
+                                    <a href="delete.php?id=<?= $ens['id_enseignant'] ?>"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Supprimer cet enseignant ?')">🗑️ Supprimer</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
             </table>
-
         </div>
-
     </div>
 
 </div>
 
-
-<?php require_once "../../includes/footer.php"; ?>
+<?php require_once __DIR__ . '/../../includes/footer.php'; ?>
