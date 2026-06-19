@@ -83,7 +83,7 @@ $stats = [
                     if (empty($inscription)): ?>
                         <tr><td colspan="4" style="text-align:center;">Aucune inscription enregistrée</td></tr>
                     <?php else:
-                        foreach ($inscriptions as $insc): ?>
+                        foreach ($inscription as $insc): ?>
                         <tr>
                             <td><?= htmlspecialchars($insc['nom'] . ' ' . $insc['prenom']) ?></td>
                             <td><?= htmlspecialchars($insc['nom_classe']) ?></td>
