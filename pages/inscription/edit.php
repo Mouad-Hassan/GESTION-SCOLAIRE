@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-require_once dirname(__DIR__, 2) . '/bootstrap.php';
-
 $pageTitle = 'Modifier une inscription';
 $erreurs   = [];
 $pdo       = getDBConnection();
