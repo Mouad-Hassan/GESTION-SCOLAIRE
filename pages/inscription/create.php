@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-
-require_once dirname(__DIR__, 2) . '/bootstrap.php';
-
 $pageTitle = 'Nouvelle inscription';
 $erreurs   = [];
-$pdo       = getDBConnection();
-\
+require_once '../../config/database.php';
+
+$pdo = getDBConnection();
+
 $eleves  = $pdo->query("SELECT id_eleve, nom, prenom FROM eleve ORDER BY nom")->fetchAll(PDO::FETCH_ASSOC);
 $classes = $pdo->query("SELECT id_classe, nom_classe, niveau FROM classe ORDER BY nom_classe")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -58,6 +57,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
         <div class="card-body">
             <form method="POST">
 
+                <!-- Liste déroulante des élèves -->
                 <div class="mb-3">
                     <label class="form-label">Élève <span class="text-danger">*</span></label>
                     <select name="id_eleve" class="form-select" required>
@@ -70,6 +70,8 @@ require_once ROOT_PATH . '/includes/navbar.php';
                         <?php endforeach; ?>
                     </select>
                 </div>
+
+                <!-- Liste déroulante des classes -->
                 <div class="mb-3">
                     <label class="form-label">Classe <span class="text-danger">*</span></label>
                     <select name="id_classe" class="form-select" required>
