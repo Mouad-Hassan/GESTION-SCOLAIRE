@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require_once ROOT_PATH . '/includes/header.php';
-require_once ROOT_PATH . '/includes/navbar.php';
+require_once dirname(__DIR__, 2) . '/includes/header.php';
+require_once dirname(__DIR__, 2) . '/includes/navbar.php';
 ?>
 
 <div class="container mt-4" style="max-width: 500px;">
@@ -101,4 +101,4 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </div>
 </div>
 
-<?php require_once ROOT_PATH . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__, 2) . '/includes/footer.php'; ?>
